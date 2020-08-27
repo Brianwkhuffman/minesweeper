@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid')
     let width = 10
     let bombAmount = 20
+    let flags = 0
     let squaresArray = []
     let isGameOver = false
 
@@ -20,10 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.appendChild(square)
             squaresArray.push(square)
 
-            //adding click to squares
+            //normal click to squares
             square.addEventListener('click', function (e) {
                 click(square)
             })
+
+            //cntrl and left click, oncontextmenu is used for right click
+            square.oncontextmenu = function (e) {
+                e.preventDefault()
+                addFlag(square)
+            }
         }
 
         //add numbers to grid
@@ -49,13 +56,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createBoard()
 
+    //add flag on right click
+    function addFlag(square) {
+        if (isGameOver) return
+        if (!square.classList.contains('checked') && (flags < bombAmount)) {
+            if (!square.classList.contains('flag'))
+                square.classList.add('flag')
+            square.innerHTML = '🏳️'
+            flags++
+        } else {
+            square.classList.remove('flag')
+            square.innerHTML = ''
+            flags--
+        }
+    }
+
+
     //click on square actions
     function click(square) {
         let currentId = square.id
         if (isGameOver) return
         if (square.classList.contains('checked') || square.classList.contains('flag')) return
         if (square.classList.contains('bomb')) {
-            console.log('Game Over')
+            gameOver(square)
         } else {
             let total = square.getAttribute('data')
             if (total != 0) {
@@ -114,6 +137,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 10)
     }
+
+    //game over logic
+    function gameOver(square) {
+        console.log('Boom')
+        isGameOver = true
+
+        //show all bombs when gameover
+        squaresArray.forEach(square => {
+            if (square.classList.contains('bomb'))
+                square.innerHTML = '💣'
+        })
+
+    }
+
+
 
 
 

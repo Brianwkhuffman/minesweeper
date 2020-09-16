@@ -3,10 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const flagAmtDiv = document.querySelector('#flag-amount')
     const bombAmtDiv = document.querySelector('#bomb-amount')
     let width = 10
-    let bombAmount = 20
+    let bombAmount = 10
     let flags = 0
     let squaresArray = []
     let isGameOver = false
+    let startNg
 
     //creates grid
     function createBoard() {
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 square.classList.add('flag')
             square.innerHTML = '🏳️'
             flags++
+            document.getElementById('flag-amount').innerHTML = bombAmount - flags
             checkForWin()
         } else {
             square.classList.remove('flag')
@@ -149,10 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //game over logic
     function gameOver(square) {
-        let startNg = confirm("Game over! Start new game?")
+        startNg = confirm("You hit a bomb! Start new game?")
         isGameOver = true
         if (startNg == true) {
-            //refresh page
             window.setTimeout(function () {
                 document.location.reload(true);
             }, 200);
@@ -176,8 +177,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 matches++
             }
             if (matches === bombAmount) {
-                console.log("You win!")
+                startNg = confirm('You found all the bombs! Start a new game?')
                 isGameOver = true
+                if (startNg == true) {
+                    window.setTimeout(function () {
+                        document.location.reload(true);
+                    }, 200);
+                }
+                return
             }
         }
     }

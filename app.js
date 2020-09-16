@@ -152,7 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let startNg = confirm("Game over! Start new game?")
         isGameOver = true
         if (startNg == true) {
-            console.log('ok')
+            //refresh page
+            window.setTimeout(function () {
+                document.location.reload(true);
+            }, 200);
         }
 
         //show all bombs when gameover

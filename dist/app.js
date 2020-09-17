@@ -65,16 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function addFlag(square) {
         if (isGameOver) return
         if (!square.classList.contains('checked') && (flags < bombAmount)) {
-            if (!square.classList.contains('flag'))
+            if (!square.classList.contains('flag')) {
                 square.classList.add('flag')
-            square.innerHTML = '🏳️'
-            flags++
-            document.getElementById('flag-amount').innerHTML = bombAmount - flags
-            checkForWin()
-        } else {
-            square.classList.remove('flag')
-            square.innerHTML = ''
-            flags--
+                square.innerHTML = '🏳️'
+                flags++
+                document.getElementById('flag-amount').innerHTML = bombAmount - flags
+                checkForWin()
+            } else {
+                square.classList.remove('flag')
+                square.innerHTML = ''
+                flags--
+                document.getElementById('flag-amount').innerHTML = bombAmount + flags
+            }
         }
     }
 
